@@ -125,7 +125,7 @@ public class TransactionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id " + id));
     }
 
-    private TransactionResponse mapToResponse(Transaction transaction) {
+    public TransactionResponse mapToResponse(Transaction transaction) {
         return TransactionResponse.builder()
                 .id(transaction.getId())
                 .category(categoryService.mapToResponse(transaction.getCategory()))
