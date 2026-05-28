@@ -10,6 +10,8 @@ import com.igor.coin.repository.AccountRepository;
 import com.igor.coin.repository.CardRepository;
 import com.igor.coin.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,11 @@ public class TransactionService {
         return transactionRepository.findAllByUserId(user.getId()).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public Page<TransactionResponse> getFiltered(User user, Integer month, Integer year, TransactionType type, Long categoryId, Pageable pageable) {
+        return transactionRepository.findFilteredTransactions(user.getId(), month, year, type, categoryId, pageable)
+                .map(this::mapToResponse);
     }
 
     public TransactionResponse getById(Long id, User user) {
