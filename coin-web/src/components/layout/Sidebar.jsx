@@ -14,7 +14,7 @@ const navigation = [
 ];
 
 const Sidebar = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
 
   return (
@@ -67,13 +67,6 @@ const Sidebar = () => {
             <p className="text-xs text-gray-500 truncate">{user?.email || 'user@email.com'}</p>
           </div>
         </div>
-        <button
-          onClick={logout}
-          className="flex items-center w-full px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors"
-        >
-          <LogOut className="mr-3 h-5 w-5 text-red-500" />
-          Sair
-        </button>
       </div>
     </aside>
   );

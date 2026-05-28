@@ -9,7 +9,7 @@ import EmptyState from '../components/ui/EmptyState';
 import PageSkeleton from '../components/ui/PageSkeleton';
 
 const Settings = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('accounts');
 
@@ -102,17 +102,6 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div className="border-t border-gray-100 pt-6 mt-8">
-                <h3 className="text-lg font-bold text-red-600 mb-4">Área de Risco</h3>
-                <p className="text-gray-500 text-sm mb-4">
-                  Ao sair, você precisará fazer login novamente para acessar seus dados financeiros.
-                </p>
-                <button
-                  onClick={logout}
-                  className="flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
-                >
-                  <LogOut className="w-5 h-5 mr-2" /> Encerrar Sessão
-                </button>
               </div>
             </div>
           )}
