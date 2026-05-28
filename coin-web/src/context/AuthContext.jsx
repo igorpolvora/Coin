@@ -46,6 +46,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (name, email, password) => {
+    try {
+      const response = await api.post('/auth/register', { name, email, password });
+      const { token: newToken, user: userData } = response.data;
+      
+      localStorage.setItem('token', newToken);
+      setToken(newToken);
+      setUser(userData);
+      
+      return { success: true };
+    } catch (error) {
+      console.error("Register error", error);
+      return { 
+        success: false, 
+        message: error.response?.data?.message || 'Erro ao criar conta. E-mail pode já estar em uso.'
+      };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
@@ -64,7 +83,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isAuthenticated, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
