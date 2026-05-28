@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
 import Cards from './pages/Cards'
 import Vault from './pages/Vault'
+import Budget from './pages/Budget'
 import './App.css'
 
 const queryClient = new QueryClient()
@@ -38,7 +39,7 @@ function AppContent() {
         <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
         <Route path="/cards" element={<PrivateRoute><Cards /></PrivateRoute>} />
         <Route path="/vault" element={<PrivateRoute><Vault /></PrivateRoute>} />
-        <Route path="/budget" element={<PrivateRoute><GenericPlaceholder title="Orçamento" /></PrivateRoute>} />
+        <Route path="/budget" element={<PrivateRoute><Budget /></PrivateRoute>} />
         <Route path="/bills" element={<PrivateRoute><GenericPlaceholder title="Contas" /></PrivateRoute>} />
       </Routes>
     </div>

@@ -20,8 +20,11 @@ public class BudgetController {
     private final BudgetService budgetService;
 
     @GetMapping
-    public ResponseEntity<List<BudgetResponse>> getAll(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(budgetService.getAll(user));
+    public ResponseEntity<List<BudgetResponse>> getAll(
+            @AuthenticationPrincipal User user,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year) {
+        return ResponseEntity.ok(budgetService.getAll(user, month, year));
     }
 
     @GetMapping("/{id}")

@@ -20,6 +20,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query("SELECT SUM(t.amount) FROM Transaction t WHERE t.user.id = :userId AND t.type = :type AND MONTH(t.date) = :month AND YEAR(t.date) = :year")
     Optional<BigDecimal> sumAmountByUserIdAndTypeAndMonthYear(@Param("userId") Long userId, @Param("type") com.igor.coin.entity.enums.TransactionType type, @Param("month") Integer month, @Param("year") Integer year);
     
+    @Query("SELECT SUM(t.amount) FROM Transaction t WHERE t.user.id = :userId AND t.category.id = :categoryId AND t.type = 'EXPENSE' AND MONTH(t.date) = :month AND YEAR(t.date) = :year")
+    Optional<BigDecimal> sumExpenseByUserIdAndCategoryIdAndMonthYear(@Param("userId") Long userId, @Param("categoryId") Long categoryId, @Param("month") Integer month, @Param("year") Integer year);
+    
     @Query("SELECT t.category.name, t.category.color, SUM(t.amount) as total FROM Transaction t WHERE t.user.id = :userId AND t.type = 'EXPENSE' AND MONTH(t.date) = :month AND YEAR(t.date) = :year GROUP BY t.category.name, t.category.color ORDER BY total DESC")
     List<Object[]> getCategoryBreakdown(@Param("userId") Long userId, @Param("month") Integer month, @Param("year") Integer year);
     

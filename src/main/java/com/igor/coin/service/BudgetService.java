@@ -8,10 +8,12 @@ import com.igor.coin.entity.User;
 import com.igor.coin.exception.BusinessException;
 import com.igor.coin.exception.ResourceNotFoundException;
 import com.igor.coin.repository.BudgetRepository;
+import com.igor.coin.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +23,17 @@ public class BudgetService {
 
     private final BudgetRepository budgetRepository;
     private final CategoryService categoryService;
+    private final TransactionRepository transactionRepository;
 
-    public List<BudgetResponse> getAll(User user) {
-        return budgetRepository.findAllByUserId(user.getId()).stream()
+    public List<BudgetResponse> getAll(User user, Integer month, Integer year) {
+        List<Budget> budgets;
+        if (month != null && year != null) {
+            budgets = budgetRepository.findAllByUserIdAndMonthAndYear(user.getId(), month, year);
+        } else {
+            budgets = budgetRepository.findAllByUserId(user.getId());
+        }
+        
+        return budgets.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -85,12 +95,20 @@ public class BudgetService {
     }
 
     private BudgetResponse mapToResponse(Budget budget) {
+        BigDecimal spent = transactionRepository.sumExpenseByUserIdAndCategoryIdAndMonthYear(
+                budget.getUser().getId(),
+                budget.getCategory().getId(),
+                budget.getMonth(),
+                budget.getYear()
+        ).orElse(BigDecimal.ZERO);
+
         return BudgetResponse.builder()
                 .id(budget.getId())
                 .category(categoryService.mapToResponse(budget.getCategory()))
                 .amountLimit(budget.getAmountLimit())
                 .month(budget.getMonth())
                 .year(budget.getYear())
+                .spent(spent)
                 .build();
     }
 }
