@@ -19,4 +19,5 @@ public class FixedBillResponse {
     private Integer dueDay;
     private Boolean isActive;
     private Boolean autoPay;
+    private Boolean isPaid;
 }

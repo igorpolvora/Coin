@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface FixedBillPaymentRepository extends JpaRepository<FixedBillPayment, Long> {
     List<FixedBillPayment> findAllByFixedBillUserId(Long userId);
     Optional<FixedBillPayment> findByIdAndFixedBillUserId(Long id, Long userId);
+    Optional<FixedBillPayment> findByFixedBillIdAndMonthAndYear(Long fixedBillId, Integer month, Integer year);
 }

@@ -20,8 +20,11 @@ public class FixedBillController {
     private final FixedBillService fixedBillService;
 
     @GetMapping
-    public ResponseEntity<List<FixedBillResponse>> getAll(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(fixedBillService.getAll(user));
+    public ResponseEntity<List<FixedBillResponse>> getAll(
+            @AuthenticationPrincipal User user,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year) {
+        return ResponseEntity.ok(fixedBillService.getAll(user, month, year));
     }
 
     @GetMapping("/{id}")
@@ -43,5 +46,25 @@ public class FixedBillController {
     public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
         fixedBillService.delete(id, user);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/pay")
+    public ResponseEntity<Void> pay(
+            @PathVariable Long id,
+            @RequestParam Integer month,
+            @RequestParam Integer year,
+            @AuthenticationPrincipal User user) {
+        fixedBillService.pay(id, month, year, user);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/unpay")
+    public ResponseEntity<Void> unpay(
+            @PathVariable Long id,
+            @RequestParam Integer month,
+            @RequestParam Integer year,
+            @AuthenticationPrincipal User user) {
+        fixedBillService.unpay(id, month, year, user);
+        return ResponseEntity.ok().build();
     }
 }
