@@ -8,6 +8,7 @@ import Cards from './pages/Cards'
 import Vault from './pages/Vault'
 import Budget from './pages/Budget'
 import Bills from './pages/Bills'
+import Layout from './components/layout/Layout'
 import './App.css'
 
 const queryClient = new QueryClient()
@@ -15,7 +16,7 @@ const queryClient = new QueryClient()
 // PrivateRoute Component
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  return isAuthenticated ? <Layout>{children}</Layout> : <Navigate to="/login" replace />;
 };
 
 // Placeholder components for the requested routes
@@ -30,9 +31,8 @@ function AppContent() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Routes>
-        <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
+    <Routes>
+      <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         <Route path="/login" element={<Login />} />
         
         {/* Protected Routes */}
@@ -40,10 +40,9 @@ function AppContent() {
         <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
         <Route path="/cards" element={<PrivateRoute><Cards /></PrivateRoute>} />
         <Route path="/vault" element={<PrivateRoute><Vault /></PrivateRoute>} />
-        <Route path="/budget" element={<PrivateRoute><Budget /></PrivateRoute>} />
-        <Route path="/bills" element={<PrivateRoute><Bills /></PrivateRoute>} />
-      </Routes>
-    </div>
+      <Route path="/budget" element={<PrivateRoute><Budget /></PrivateRoute>} />
+      <Route path="/bills" element={<PrivateRoute><Bills /></PrivateRoute>} />
+    </Routes>
   );
 }
 
