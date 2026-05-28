@@ -63,6 +63,19 @@ public class SavingsGoalService {
     }
 
     @Transactional
+    public SavingsGoalResponse deposit(Long id, BigDecimal amount, User user) {
+        SavingsGoal goal = getSavingsGoalByIdAndUser(id, user);
+        
+        goal.setCurrentAmount(goal.getCurrentAmount().add(amount));
+        
+        if (goal.getCurrentAmount().compareTo(goal.getTargetAmount()) >= 0) {
+            goal.setIsCompleted(true);
+        }
+        
+        return mapToResponse(savingsGoalRepository.save(goal));
+    }
+
+    @Transactional
     public void delete(Long id, User user) {
         SavingsGoal goal = getSavingsGoalByIdAndUser(id, user);
         savingsGoalRepository.delete(goal);

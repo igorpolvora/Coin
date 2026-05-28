@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/savings-goals")
@@ -37,6 +39,15 @@ public class SavingsGoalController {
     @PutMapping("/{id}")
     public ResponseEntity<SavingsGoalResponse> update(@PathVariable Long id, @RequestBody SavingsGoalRequest request, @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(savingsGoalService.update(id, request, user));
+    }
+
+    @PostMapping("/{id}/deposit")
+    public ResponseEntity<SavingsGoalResponse> deposit(@PathVariable Long id, @RequestBody Map<String, BigDecimal> payload, @AuthenticationPrincipal User user) {
+        BigDecimal amount = payload.get("amount");
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(savingsGoalService.deposit(id, amount, user));
     }
 
     @DeleteMapping("/{id}")
