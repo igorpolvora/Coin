@@ -35,8 +35,8 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
-    public Page<TransactionResponse> getFiltered(User user, Integer month, Integer year, TransactionType type, Long categoryId, Pageable pageable) {
-        return transactionRepository.findFilteredTransactions(user.getId(), month, year, type, categoryId, pageable)
+    public Page<TransactionResponse> getFiltered(User user, Integer month, Integer year, TransactionType type, Long categoryId, Long cardId, Pageable pageable) {
+        return transactionRepository.findFilteredTransactions(user.getId(), month, year, type, categoryId, cardId, pageable)
                 .map(this::mapToResponse);
     }
 

@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
+import Cards from './pages/Cards'
 import './App.css'
 
 const queryClient = new QueryClient()
@@ -34,7 +35,7 @@ function AppContent() {
         {/* Protected Routes */}
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
-        <Route path="/cards" element={<PrivateRoute><GenericPlaceholder title="Cartões" /></PrivateRoute>} />
+        <Route path="/cards" element={<PrivateRoute><Cards /></PrivateRoute>} />
         <Route path="/vault" element={<PrivateRoute><GenericPlaceholder title="Cofre" /></PrivateRoute>} />
         <Route path="/budget" element={<PrivateRoute><GenericPlaceholder title="Orçamento" /></PrivateRoute>} />
         <Route path="/bills" element={<PrivateRoute><GenericPlaceholder title="Contas" /></PrivateRoute>} />

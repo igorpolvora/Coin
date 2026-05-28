@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Plus, Filter, Trash2, Edit2, Calendar } from 'lucide-react';
 import { useTransactions } from '../hooks/useTransactions';
 import { useCategories } from '../hooks/useCategories';
@@ -20,15 +21,21 @@ const months = [
 
 const Transactions = () => {
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState(null);
 
-  // Filters State
+  // Filters State initialized from URL if present
+  const urlCardId = searchParams.get('cardId');
+  const urlMonth = searchParams.get('month');
+
   const [filters, setFilters] = useState({
-    month: new Date().getMonth() + 1,
+    month: urlMonth ? parseInt(urlMonth) : new Date().getMonth() + 1,
     year: currentYear,
     type: '', // '' = All, 'INCOME', 'EXPENSE'
     categoryId: '',
+    cardId: urlCardId || '',
     page: 0,
     size: 20
   });
@@ -137,6 +144,14 @@ const Transactions = () => {
             <option value="">Categoria (Todas)</option>
             {categories?.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
+
+          {/* Hidden badge if filtered by card */}
+          {filters.cardId && (
+            <div className="flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-sm border border-blue-100">
+              <span className="font-medium mr-2">Filtrado por Cartão</span>
+              <button onClick={() => handleFilterChange('cardId', '')} className="hover:text-blue-900">&times;</button>
+            </div>
+          )}
         </div>
       </div>
 

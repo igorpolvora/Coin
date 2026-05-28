@@ -30,8 +30,9 @@ public class TransactionController {
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) com.igor.coin.entity.enums.TransactionType type,
             @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long cardId,
             @PageableDefault(sort = "date", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(transactionService.getFiltered(user, month, year, type, categoryId, pageable));
+        return ResponseEntity.ok(transactionService.getFiltered(user, month, year, type, categoryId, cardId, pageable));
     }
 
     @GetMapping("/{id}")

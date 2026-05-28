@@ -32,13 +32,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
            "AND (:month IS NULL OR MONTH(t.date) = :month) " +
            "AND (:year IS NULL OR YEAR(t.date) = :year) " +
            "AND (:type IS NULL OR t.type = :type) " +
-           "AND (:categoryId IS NULL OR t.category.id = :categoryId)")
+           "AND (:categoryId IS NULL OR t.category.id = :categoryId) " +
+           "AND (:cardId IS NULL OR t.card.id = :cardId)")
     Page<Transaction> findFilteredTransactions(
             @Param("userId") Long userId,
             @Param("month") Integer month,
             @Param("year") Integer year,
             @Param("type") com.igor.coin.entity.enums.TransactionType type,
             @Param("categoryId") Long categoryId,
+            @Param("cardId") Long cardId,
             Pageable pageable
     );
 }
